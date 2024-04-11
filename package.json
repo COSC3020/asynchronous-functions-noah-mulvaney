@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "node-worker-threads-pool": "^1.5.1"
+  }
+}

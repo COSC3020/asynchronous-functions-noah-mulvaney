@@ -6,7 +6,7 @@
 
 const {StaticPool} = require("node-worker-threads-pool");
 
-function nMatches(arr, key) {
+function nMatches(arr, key, done) {
   const nThreads = Math.floor(Math.sqrt(arr.length));
 
   const workerPool = new StaticPool({
@@ -29,17 +29,14 @@ function nMatches(arr, key) {
   for (let i = 0; i < nThreads; ++i) {
     (async () => {
       let m = await workerPool.exec(arr.slice(i * size, (i + 1) * size));
-      console.log(i, m);
+      // console.log(i, m);
       matches += m;
       ++threadsFinished;
 
       if (threadsFinished == nThreads) {
+        done(matches);
         workerPool.destroy();
       }
     })();
   }
-
-  return matches;
 }
-
-console.log(nMatches([1,2,3,3,4,5,6,6,6], 3));

@@ -21,3 +21,5 @@ this.
 
 What is the time complexity of your implementation (worst-case $\Theta$)? Add
 your answer, including your reasoning, to this markdown file.
+
+My implmentation has a work complexity $T_1(n)$ of $n+1$. It also has a constant span $T_\infty(n)$. I am using $\sqrt{n}$ worker threads. The time complexity of a parallel process is $T(n) \in \Theta(\frac{T_1(n)}{P} + T_\infty(n))$. So my implementation has a complexity of $\frac{n+1}{\sqrt{n}} + 1$ or $\Theta(n)$.

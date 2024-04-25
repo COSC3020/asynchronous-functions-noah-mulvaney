@@ -55,6 +55,7 @@ function asyncMin(arr, cb) {
 
       return min;
     },
+    workerData: 0 // required?
   });
 
   const subSize = arr.length / nThreads; // size of sub arrays passed to each thread

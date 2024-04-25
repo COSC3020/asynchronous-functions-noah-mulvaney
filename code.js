@@ -43,30 +43,39 @@ function nMatches(arr, key, done) {
 // asynchronously find the minimum value in an array 
 function asyncMin(arr, cb) {
   const nThreads = Math.floor(Math.sqrt(arr.length)); // number of threads = sqrt{n}
-  let min = Infinity; // global variable to store minimum value found
 
   // setup worker threads
   const workers = new StaticPool({
     size: nThreads,
     task: function(subArr) {
+      let min = Infinity;
+      
       for (let i = 0; i < subArr.length; ++i)
-        if (subArr[i] < this.workerData) this.workerData = subArr[i];
+        if (subArr[i] < min) min = subArr[i];
+
+      return min;
     },
-    workerData: min // shared data, updated by all threads
   });
 
   const subSize = arr.length / nThreads; // size of sub arrays passed to each thread
   let nFinished = 0; // number of threads finished
+  let partMin = []; // array to store the partial minimums
 
   // assign work to threads
   for (let i = 0; i < nThreads; ++i) {
     (async () => {
       // start thread working on sub array
-      await workers.exec(arr.slice(i * subSize, (i + 1) * subSize));
+      let r = await workers.exec(arr.slice(i * subSize, (i + 1) * subSize));
+      partMin.push(r);
       ++nFinished;
 
       if (nFinished == nThreads) { // all threads have finished
-        cb(workers.workerData); // call the callback function with shared data
+        // find min of partMin
+        let min = Infinity;
+        for (let i = 0; i < partMin.length; ++i)
+          if (partMin[i] < min) min = partMin[i];
+        
+        cb(min); // call the callback function with final result
         workers.destory(); // delete all the worker threads
       }
     })();

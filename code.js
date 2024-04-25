@@ -69,4 +69,6 @@ function asyncMin(arr, cb) {
         cp(workers.workerData); // call the callback function with shared data
         workers.destory(); // delete all the worker threads
       }
+    })();
   }
+}

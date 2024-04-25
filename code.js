@@ -62,7 +62,7 @@ function asyncMin(arr, cb) {
   for (let i = 0; i < nThreads; ++i) {
     (async () => {
       // start thread working on sub array
-      await workerPool.exec(arr.slice(i * subSize, (i + 1) * subsize));
+      await workers.exec(arr.slice(i * subSize, (i + 1) * subsize));
       ++nFinished;
 
       if (nFinished == nThreads) { // all threads have finished

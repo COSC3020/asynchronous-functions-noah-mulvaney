@@ -66,7 +66,7 @@ function asyncMin(arr, cb) {
       ++nFinished;
 
       if (nFinished == nThreads) { // all threads have finished
-        cp(workers.workerData); // call the callback function with shared data
+        cb(workers.workerData); // call the callback function with shared data
         workers.destory(); // delete all the worker threads
       }
     })();

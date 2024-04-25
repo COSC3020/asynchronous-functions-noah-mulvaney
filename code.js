@@ -54,8 +54,7 @@ function asyncMin(arr, cb) {
         if (subArr[i] < min) min = subArr[i];
 
       return min;
-    },
-    workerData: 0 // required?
+    }
   });
 
   const subSize = arr.length / nThreads; // size of sub arrays passed to each thread
@@ -77,7 +76,7 @@ function asyncMin(arr, cb) {
           if (partMin[i] < min) min = partMin[i];
         
         cb(min); // call the callback function with final result
-        workers.destory(); // delete all the worker threads
+        workers.destroy(); // delete all the worker threads
       }
     })();
   }

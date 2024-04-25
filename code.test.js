@@ -23,11 +23,24 @@ function syncMatch(arr, key) {
   return matches;
 }
 
+function syncMin(arr) {
+  let min = Infinity;
+
+  for (let i = 0; i < arr.length; ++i)
+    if (arr[i] < min) min = arr[i];
+
+  return min;
+}
+
 for (let i = 0; i < 10; ++i) {
   let arr = randArr();
   let key = arr[Math.floor(Math.random() * arr.length)];
 
   nMatches(arr, key, function(matches) {
     assert(matches == syncMatch(arr, key));
+  });
+
+  asyncMin(arr, function(min) {
+    assert(min == syncMin(arr));
   });
 }

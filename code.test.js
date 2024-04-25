@@ -41,6 +41,8 @@ for (let i = 0; i < 10; ++i) {
   });
 
   asyncMin(arr, function(min) {
-    assert(min == syncMin(arr));
+    let syncMinVal = syncMin(arr);
+    let mes = "arr: " + arr + ", async min: " + min, + ", sync min: " + syncMinVal;
+    assert(min == syncMinVal, mes);
   });
 }
